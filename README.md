@@ -1,8 +1,9 @@
 # AutoRator
+
 Very often people are asked to give star reviews and/or comments on goods and services they have received. However, the existing rating experience in the market is not great:
 1. Many users do not give star ratings that match the sentiment in their comments. This issue can be found in Google reviews, for example.
-2. Many users give only star ratings but no comments. This does not help the service providers know where they are doing well and where they need to improve.
-
+Many users give only star ratings but no comments. This does not help the service providers know where they are doing well and where they need to improve.
+* 
 Here comes AutoRator, a machine learning-based rater that analyses the sentiment of a comment and categorises it as a positive, neutral or negative comment. In this way, rather than letting the user rate whether their experience is positive, negative or neutral, the user needs to write a comment and AutoRator automatically rates whether it is positive, neutral or negative.
 
 ### Content
