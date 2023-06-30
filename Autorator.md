@@ -10,8 +10,8 @@ There were several stages to developing AutoRator:
 2. Data ananalysis on the dataset produced a few intersting insights. 
 
 
+![Origin_analysis_tableau](https://github.com/Reinierandrew/Autorator/assets/112833174/32a1e730-65d7-40c0-8f5d-2c80b4a8f383)
 
-![MacDown logo](https://github.com/Reinierandrew/Autorator/blob/main/output/Origin.png)
 
 Hello there! I’m **MacDown**, the open source Markdown editor for OS X.
 
