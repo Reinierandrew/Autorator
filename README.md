@@ -49,10 +49,13 @@ The decision was made to use the positive, negative and neutral algorithm result
 ## Website
 The final element is to apply the learning model to a review on a website. The opening page askes the user to leave a review.
 
-<img width="600" alt="Screenshot 2023-07-16 at 10 49 54 am" src="https://github.com/Reinierandrew/automatic-star-review/assets/112833174/753ee783-cde8-4f45-aa0a-710f923965c8">
+<img width="1389" alt="Screenshot 2023-07-16 at 10 49 54 am" src="https://github.com/Reinierandrew/Autorator/assets/112833174/1cf8df39-e383-4180-9916-355fc4157eb4">
+
 Using google search the user can select any location in the world to leave a review for. After input of the review the page tells the user if the review was positive, neutral or nagative and collects 5 recent reviews for the location from google and presents the sentiment of thoise reviews as well as a wordcloud of the words used in the other reviews.
 
-<img width="600" alt="Screenshot 2023-07-16 at 10 50 34 am" src="https://github.com/Reinierandrew/automatic-star-review/assets/112833174/4ef678d9-a14b-49a1-b2e1-37cbb2f6e3ea"> <img width="600" alt="Screenshot 2023-07-16 at 10 50 53 am" src="https://github.com/Reinierandrew/automatic-star-review/assets/112833174/1adcac14-ce5b-447d-9ed2-65a9ed28ca3e">	
+ <img width="999" alt="Screenshot 2023-07-16 at 10 50 34 am" src="https://github.com/Reinierandrew/Autorator/assets/112833174/b543e181-fa6e-4249-b065-545911cfd294"><img width="998" alt="Screenshot 2023-07-16 at 10 50 53 am" src="https://github.com/Reinierandrew/Autorator/assets/112833174/ea3789b5-00a4-40a0-bcdd-514620a66657">
+
+
 ## Notes on how to use
 
 Download the reviews and business csv files from `https://www.yelp.com/dataset`
