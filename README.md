@@ -1,70 +1,64 @@
-# AutoRator
+# Autorator
 
-Very often people are asked to give star reviews and/or comments on goods and services they have received. However, the existing rating experience in the market is not great:
-1. Many users do not give star ratings that match the sentiment in their comments. This issue can be found in Google reviews, for example.
-Many users give only star ratings but no comments. This does not help the service providers know where they are doing well and where they need to improve.
-* 
-Here comes AutoRator, a machine learning-based rater that analyses the sentiment of a comment and categorises it as a positive, neutral or negative comment. In this way, rather than letting the user rate whether their experience is positive, negative or neutral, the user needs to write a comment and AutoRator automatically rates whether it is positive, neutral or negative.
+We are often asked to give star reviews and/or comments on goods and services we have received. However, star ratings and sentiment expressed in comments often don't match.
 
-### Content
-AutoRator comes in the form of a webpage and focuses only on restaurant reviews. The webpage has a welcome page with a "leave a review" button. Once the button is clicked, a popup page appears and there are options to select the desired restaurant and leave a comment. After a comment is submitted, two pictures would appear: a) a graph with Emolex data for the comments extracted from Google reviews for the user-selected restaurant and b) a word cloud graphic that is based on the comments extracted from Google reviews for the user-selected restaurant.
+Here comes **AutoRator**, a machine learning-based algorithm that analyses the sentiment of a comment and categorises it as a positive, neutral or negative comment.
 
-### Development
-There are several stages to developing AutoRator:
-1. Retrieved all available comments and corresponding star ratings from the Yelp database and loaded them into MongoDB.
-2. In MongoDB, filtered the dataset for restaurant reviews only, removed null and uncessary data and reduced the dataset to 888000 reviews.
-3. Loaded the 888000 reviews from MongoDB into CSV files.
-4. Set up, trained and tested several machine learning models with a subset of the data.
-5. Assessed the accuracy scores for each model and they were lower than 0.7.
-6. Determined the problem and optimised each model until we got models with accuracy scores greater than 0.75.
-7. Selected the best model.
-8. Set up the flask API to run the webpage.
-9. Downloaded and modified a bootscrap template and then designed the webpage on that basis.
-10. Developed the Emolex calculator and designed the graph that presents Emolex data.
-11. Produced the word cloud graphic.
+There were several stages to developing AutoRator:  
 
-### Data sources
-1. Yelp Reviews
-2. Google Reviews
-3. Emolex
+## Dataset
+A dataset of 8 million Yelp reviews was used. Restuarant reviews that had a user comment of useful were extracted leaving 930.000 reviews and a further filter based on origion of food e.g. Italian or Vietnamese ws applied leaving a dataset of 105.000 reviews.  
+Originally this was done in an sql database though for ease of use a python script is included to extract the above **notebooks/extract_data.jpynb**  
 
-### Model optimisation, evaluation and selection
-Several different models were used:
-1. Random Forest
-2. Keras Tokeniser
-3. Linear Support Vector
-4. Linear Regression
-5. Naive Bayes Multinomial
+## Raw data analysis
+Data ananalysis on the subset produced a few intersting insights.  
+	* 	People are much more inclined top leave a review if the experience was positive
+	![rating_distribution](https://github.com/Reinierandrew/Autorator/assets/112833174/dd2dc70c-82b7-4600-9b21-4c8ffc60fbcb)  
+	
+* 	 Mexican, Italian and Chinese show the most businesses and reviews though a lot less reviews are left for Chinese restaurants.   
+* 	The top 3 also show a less than average star rating.  
+* 	Japanese, Thai and particularly French restaurants receive more frequent reviews.  
+* 	Spanish and Cuban and French restaurants receive the highest average ratings
 
-After optimisation and evaluation of each model, we selected the linear regression model as the best machine learning model in this case. This is because although the SVM model gives better accuracy, precision and recall scores, the SVM joblib file is too big to load with Flask API. The linear regression model with an accuracy score of 0.76 and balanced precision and recall scores for each cetegory is then our best model.
+ ![Origin_analysis_tableau](https://github.com/Reinierandrew/Autorator/assets/112833174/32a1e730-65d7-40c0-8f5d-2c80b4a8f383)
+ 
+## Sentiment analysis
+Two sentiment word analyses were used on the reviews. First VADER which is a rule based text analyser which rates a 'text' either positive, negative or neutral.
+![compoundvaderscores](https://github.com/Reinierandrew/Autorator/assets/112833174/cb87c29a-092b-48f8-b85e-34556bef60ff)
+The second analysis used on the text is EMOLEX which compares the 'text' to list of words which are ranked according to 8 emotions and 2 sentoments, positive and negative.
+![emolexeallcores](https://github.com/Reinierandrew/Autorator/assets/112833174/df1acaa5-2864-4968-b9f4-90ce4419b8f8)
 
-### Summary
-AutoRator has an accuracy score of 0.76. For our use case, this level of accuracy is acceptable. Recall and precision scores are 0.70 or higher except for the recall score of 0.67 of the neutral category. This means that the model is relatively weaker in classifying a truly neutral comment accurately.
+The graphs above show there is a much larger correlation between the Vader analysis scores and the stars given to a review than the Emolex analysis where the differences are a lot more subtle.
 
-The below is a screenshot for the classification report of the linear regression model.
+## Machine learning
+Various models were used to attempt to generate an algorithm to predict the stars of any given review:
+	1. Random Forest
+	2. Keras Tokeniser
+	3. Linear Support Vector
+	4. Linear Regression
+	5. Naive Bayes Multinomial
 
-![Screenshot 2023-05-15 at 7 57 09 pm](https://github.com/davidj00/automatic-star-review/assets/115685811/bf7d0902-f1af-4ce5-8386-e5baa72d3f47)
+The results were discouraging and in all models the precision threshold of 80% was easily reached for the 1 and 5 star reviews, the remainder and particularly the 3 star reviews were well below the threshold. 
 
-### Instructions to run the programme
-1. Activate your virtual environment
-2. Ensure the below modules are installed:
-  - from nltk.sentiment.vader import SentimentIntensityAnalyzer
-  - import string
-  - import pandas as pd
-  - from nltk.corpus import stopwords
-  - import json
-  - import matplotlib.pyplot as plt
-  - import matplotlib
-  - matplotlib.use('Agg')
-  - sid = SentimentIntensityAnalyzer()
-  - from nltk.tokenize import word_tokenize
-  - import os
-  - from joblib import load
-  - import warnings
-  - warnings.filterwarnings("ignore")
-  - from wordcloud import WordCloud, STOPWORDS, ImageColorGenerator
-  - from flask import (Flask, jsonify, render_template, request, redirect)
-3. In Git Bash, cd to the directory in which run.sh file is located on your local computer
-4. Open the app.py file and uncomment lines 26-51 (if running the flask for the first time)
-5. Enter "chmod a+x run.sh" (if running the flask for the first time) and then "./run.sh" to run the flask
+When splitting the reviews into just neagtive and positive an accuracy of 91% was achieved, and when adding a 'neutral' rating an accuracy of 84% was achieved.
+
+The decision was made to use the positive, negative and neutral algorithm resulting from the SVM learning model.
+
+<img width="419" alt="Screenshot 2023-07-16 at 10 18 16 am" src="https://github.com/Reinierandrew/Autorator/assets/112833174/f1322564-9eb3-4f0a-910f-a50caa5b78aa">
+
+## Website
+The final element is to apply the learning model to a review on a website. The opening page askes the user to leave a review.
+
+<img width="600" alt="Screenshot 2023-07-16 at 10 49 54 am" src="https://github.com/Reinierandrew/automatic-star-review/assets/112833174/753ee783-cde8-4f45-aa0a-710f923965c8">
+Using google search the user can select any location in the world to leave a review for. After input of the review the page tells the user if the review was positive, neutral or nagative and collects 5 recent reviews for the location from google and presents the sentiment of thoise reviews as well as a wordcloud of the words used in the other reviews.
+
+<img width="600" alt="Screenshot 2023-07-16 at 10 50 34 am" src="https://github.com/Reinierandrew/automatic-star-review/assets/112833174/4ef678d9-a14b-49a1-b2e1-37cbb2f6e3ea"> <img width="600" alt="Screenshot 2023-07-16 at 10 50 53 am" src="https://github.com/Reinierandrew/automatic-star-review/assets/112833174/1adcac14-ce5b-447d-9ed2-65a9ed28ca3e">	
+## Notes on how to use
+
+Download the reviews and business csv files from `https://www.yelp.com/dataset`
+
+Run the notebook `extract_data.jpnyb` to create the `filtered_full.csv` file which you can the use to run the `create_vader_emolex.ipynb`. Use the output `vader_emolex.csv` to run the `LR_model.ipynb` which creates the machine learning joblib files.
+
+Navigate to the main folder in your terminal and first run `chmod a+x run.sh` and then `./run.sh` to run the flask app on a development server.
+
 

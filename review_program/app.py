@@ -116,21 +116,22 @@ def get_reviews():
     documents = []
     for review in json_list:
         documents.append(review['text'])
-    
+
+
     emotions_output = []
     for doc in documents:
         emotions_count = emolex(doc)
         emotions_output.append(emotions_count)
     emolex_df = pd.DataFrame(emotions_output)
     print(emolex_df)
-    
+
     if emolex_df.empty:
         return jsonify({'success': False, 'message': 'No emotions found.'})
     
     ax = emolex_df.plot(kind='bar', stacked=True, figsize=(10, 6))
-    ax.set_title('Emotion Counts')
-    ax.set_xlabel('Emotion')
-    ax.set_ylabel('Count')
+    ax.set_title('Emolex wordcounts of 5 Google reviews')
+    ax.set_xlabel('Review')
+    ax.set_ylabel('Word count')
     ax.legend(loc='upper right')
     plt.tight_layout()
     plt.savefig(os.path.join(dynamic_fp, 'emotions.png'))
